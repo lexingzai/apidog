@@ -25,7 +25,7 @@ class UICommand extends HyperfCommand
         $servers = $config->get('server.servers');
         $ui = 'default';
         $command = $this;
-        $host = '127.0.0.1';
+        $host = env('PHP_CONTAINER_IP','127.0.0.1');
         $port = 9939;
 
         $http = new \Swoole\Http\Server($host, $port);

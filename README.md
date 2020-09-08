@@ -44,9 +44,11 @@ return [
     // enable false 将不会生成 swagger 文件
     'enable' => env('APP_ENV') !== 'production',
     // swagger 配置的输出文件
+    // 当你有多个 http server 时, 可以在输出文件的名称中增加 {server} 字面变量
+    // 比如 /public/swagger/swagger_{server}.json
     'output_file' => BASE_PATH . '/public/swagger/swagger.json',
     // 忽略的hook, 非必须 用于忽略符合条件的接口, 将不会输出到上定义的文件中
-    'ignore' => function($controller, $action) {
+    'ignore' => function ($controller, $action) {
         return false;
     },
     // 自定义验证器错误码、错误描述字段
@@ -62,7 +64,7 @@ return [
             'version' => '1.0.0',
             'title' => 'HYPERF API DOC',
         ],
-        'host' => 'apidog.com',
+        'host' => 'hyperf2.test',
         'schemes' => ['http'],
     ],
 ];
@@ -142,6 +144,8 @@ use Hyperf\Apidog\Annotation\GetApi;
 use Hyperf\Apidog\Annotation\Header;
 use Hyperf\Apidog\Annotation\PostApi;
 use Hyperf\Apidog\Annotation\Query;
+use Hyperf\Apidog\Annotation\ApiDefinitions;
+use Hyperf\Apidog\Annotation\ApiDefinition;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\ApplicationContext;
 
@@ -258,7 +262,14 @@ class UserController extends AbstractController
 
 ## Swagger UI启动
 
-组件提供了一个快捷命令, 用来快速启动一个 `swagger ui`.
+
+如果使用的是docker环境，需在.env配置PHP_CONTAINER_IP参数.
+
+```bash
+PHP_CONTAINER_IP=php容器的ip地址
+```
+
+组件提供了一个快捷命令, 用来快速启动一个 `swagger ui`,docker环境需手动打开浏览器.
 
 ```bash
 php bin/hyperf.php apidog:ui
